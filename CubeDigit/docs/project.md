@@ -34,8 +34,11 @@
 - C#
 
 ## ディレクトリ構成
+**Assets/ Packages/ ProjectSettings/ 以外のディレクトリの中は参照も変更もしないでください**
 - Assets/ : Unityプロジェクトのメインディレクトリ
   - CubeDigit/Scripts/Game/ : ゲームロジックのC#スクリプト置き場
   - CubeDigit/Scripts/Tests/EditMode/ : ゲームロジックのテストコードの置き場
   - CubeDigit/Prefabs/ : プレハブデータ
   - CubeDigit/Scenes/ : シーンデータ
+- Packages/ : なんのライブラリが使われているか
+- ProjectSettings/ : プロジェクトの設定

@@ -21,6 +21,19 @@ Linqではクエリ構文は使わずメソッド構文を使用すること。
 Unityにおいてenumは変更に弱いので特にその値がファイルに保存される場合は使用しないこと。
 依存の注入は可能な限りコンストラクタで行う。次点で required init プロパティ。
 リソースの破棄をIDisposableで可能か限り行うこと。
+publicは変数は使用せずプロパティを使用すること。
+クラスの実装は以下の順番で行うこと
+* const定数
+* static readonly変数
+* staticコンストラクタ
+* public staticメソッド
+* readonly変数
+* publicプロパティ
+* コンストラクタ
+* (あるばあいは)IDisposable.Disposeの実装
+* publicメソッド
+* privateメソッド
+* private staticメソッド
 
 ### 依存整理
 interfaceを使うのは実装が分岐する場合もしくはUnity外の実装詳細を隠ぺいする場合。
