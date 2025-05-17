@@ -1,6 +1,6 @@
 {
-    "name": "YourProjectName",
-    "rootNamespace": "YourProjectName",
+    "name": "CubeDigit",
+    "rootNamespace": "CubeDigit",
     "references": [
         "Unity.TextMeshPro",
         "Unity.InputSystem",

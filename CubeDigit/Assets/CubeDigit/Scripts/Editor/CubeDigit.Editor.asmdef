@@ -1,8 +1,8 @@
 {
-    "name": "YourProjectName.Editor",
-    "rootNamespace": "YourProjectName.Editor",
+    "name": "CubeDigit.Editor",
+    "rootNamespace": "CubeDigit.Editor",
     "references": [
-        "YourProjectName",
+        "CubeDigit",
         "UniTask",
         "R3.Unity",
         "VContainer",

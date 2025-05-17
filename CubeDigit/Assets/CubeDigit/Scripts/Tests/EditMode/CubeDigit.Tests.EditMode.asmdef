@@ -1,10 +1,10 @@
 {
     "name": "EditMode",
-    "rootNamespace": "YourProjectName.Tests.EditMode",
+    "rootNamespace": "CubeDigit.Tests.EditMode",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "YourProjectName",
+        "CubeDigit",
         "UniTask",
         "R3.Unity",
         "VContainer",
