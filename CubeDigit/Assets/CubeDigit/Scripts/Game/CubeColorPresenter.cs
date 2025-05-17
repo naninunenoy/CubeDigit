@@ -23,7 +23,7 @@ public partial class CubeColorPresenter
     [Route]
     public void OnCommand(InitCubesCommand command)
     {
-        Debug.Log($"InitCubesCommand X:{command.X} Y:{command.Y} Z:{command.Z} Size:{command.Size} Spacing:{command.Spacing}");
+        //Debug.Log($"InitCubesCommand X:{command.X} Y:{command.Y} Z:{command.Z} Size:{command.Size} Spacing:{command.Spacing}");
 
         // CubeParentTransformがnullの場合はエラー
         if (CubeParentTransform == null)
@@ -50,7 +50,7 @@ public partial class CubeColorPresenter
     [Route]
     public void OnCommand(SetColorCommand command)
     {
-        Debug.Log($"SetColorCommand {command.Id} {command.Color}");
+        //Debug.Log($"SetColorCommand {command.Id} {command.Color}");
 
         // キューブレンダラーがnullの場合は何もしない
         if (_cubeRenderer == null)
