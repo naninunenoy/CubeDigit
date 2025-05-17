@@ -1,6 +1,10 @@
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
+using VContainer;
+using VitalRouter;
+using VitalRouter.MRuby;
 
 namespace CubeDigit.Game
 {
@@ -10,6 +14,8 @@ namespace CubeDigit.Game
     /// </summary>
     public class EntryPoint : MonoBehaviour
     {
+        [Inject] readonly Router _router = default;
+        [Inject] readonly CubeColorPresenter _cubeColorPresenter = default;
         /// <summary>
         /// Cubeのサイズ（幅・高さ・奥行き）
         /// </summary>
@@ -32,11 +38,6 @@ namespace CubeDigit.Game
 
         [SerializeField] GameObject cubeParent = null;
 
-        /// <summary>
-        /// キューブ群のレンダラー
-        /// </summary>
-        private ICubeRenderer _cubeRenderer;
-
         void Awake()
         {
             // Cubeのサイズが0以下の場合はエラー
@@ -51,10 +52,15 @@ namespace CubeDigit.Game
             Assert.IsNotNull(cubeParent, $"{nameof(cubeParent)} is null.");
         }
 
-        void Start()
+        async UniTaskVoid Start()
         {
+            //コンテキストの生成
+            var context = MRubyContext.Create();
+            context.Router = _router;
+            context.CommandPreset = new MyCommandPreset();
+
             var cubeGenerator = new CubeGenerator();
-            _cubeRenderer = cubeGenerator.Generate(
+            var cubeRenderer = cubeGenerator.Generate(
                 cubeCount.x,
                 cubeCount.y,
                 cubeCount.z,
@@ -62,6 +68,7 @@ namespace CubeDigit.Game
                 cubeSpacing,
                 cubeParent.transform
             );
+            _cubeColorPresenter.CubeRenderer = cubeRenderer;
             // 全cubeに色を指定
             var allIds = Enumerable.Range(0, cubeCount.x)
                 .SelectMany(x => Enumerable.Range(0, cubeCount.y)
@@ -69,8 +76,12 @@ namespace CubeDigit.Game
                         .Select(z => new CubeID(x, y, z))));
             foreach (var id in allIds)
             {
-                _cubeRenderer.SetColor(id, color);
+                cubeRenderer.SetColor(id, color);
             }
+
+            var rubySource = Resources.Load<TextAsset>("timeline");
+            using MRubyScript script = context.CompileScript(rubySource.bytes);
+            await script.RunAsync();
         }
     }
 }

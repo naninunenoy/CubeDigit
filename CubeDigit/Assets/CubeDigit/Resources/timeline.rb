@@ -1,0 +1,1 @@
+cmd :set, id: "0|0|0", color: "#AABBCC"
