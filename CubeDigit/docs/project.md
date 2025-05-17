@@ -29,11 +29,11 @@
 }
 ```
 
-# 使用技術
+## 使用技術
 - Unity 6000.0.34
 - C#
 
-# ディレクトリ構成
+## ディレクトリ構成
 - Assets/ : Unityプロジェクトのメインディレクトリ
   - CubeDigit/Scripts/Game/ : ゲームロジックのC#スクリプト置き場
   - CubeDigit/Scripts/Tests/EditMode/ : ゲームロジックのテストコードの置き場
