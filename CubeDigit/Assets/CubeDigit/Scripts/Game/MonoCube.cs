@@ -24,13 +24,25 @@ namespace CubeDigit.Game
             CubeID = cubeID;
 
             // オブジェクト名をCubeIDの文字列表現に設定
-            gameObject.name = cubeID.ToString();
+            gameObject.name = $"Cube#{cubeID.ToString()}";
 
-            // CubeColor.Visibleに基づいてオブジェクトの表示/非表示を設定
-            gameObject.SetActive(cubeColor.Visible);
+            // キューブの色を適用
+            ApplyCubeColor(cubeColor);
+        }
 
-            // ここに必要に応じて色の設定処理を追加することも可能
-            // 例：GetComponent<Renderer>()?.material.color = cubeColor.ToColor();
+        void ApplyCubeColor(CubeColor cubeColor)
+        {
+            if (!cubeColor.Visible)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+
+            gameObject.SetActive(true);
+            if (TryGetComponent(out Renderer thisRenderer))
+            {
+                thisRenderer.material.color = cubeColor.ToColor();
+            }
         }
     }
 }

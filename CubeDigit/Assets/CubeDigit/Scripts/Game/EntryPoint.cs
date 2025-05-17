@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using CubeDigit.UnityUtils;
 
 namespace CubeDigit.Game
 {
@@ -28,6 +30,18 @@ namespace CubeDigit.Game
         /// </summary>
         [SerializeField] Color cubeColor = default;
 
+        /// <summary>
+        /// CubeIDとMonoCubeの対応を管理するDictionary
+        /// </summary>
+        readonly Dictionary<CubeID, MonoCube> _cubeDictionary = new();
+
+        /// <summary>
+        /// CubeIDに対応するMonoCubeを取得する
+        /// </summary>
+        /// <param name="cubeID">取得したいCubeのID</param>
+        /// <returns>対応するMonoCube、存在しない場合はnull</returns>
+        public MonoCube GetCube(CubeID cubeID) => _cubeDictionary.GetValueOrDefault(cubeID);
+
         void Start()
         {
             CreateCubes();
@@ -38,6 +52,9 @@ namespace CubeDigit.Game
         /// </summary>
         void CreateCubes()
         {
+            // 既存のcubeDictionaryをクリア
+            _cubeDictionary.Clear();
+
             // 配置の総サイズを計算（Cubeのサイズ + 間隔）
             float totalWidth = cubeCount.x * CubeSize + (cubeCount.x - 1) * CubeSpacing;
             float totalHeight = cubeCount.y * CubeSize + (cubeCount.y - 1) * CubeSpacing;
@@ -79,15 +96,23 @@ namespace CubeDigit.Game
                 startPosition.z + z * (CubeSize + CubeSpacing)
             );
 
+            // CubeIDを作成
+            var cubeID = new CubeID(x, y, z);
+
+            // CubeColorを作成
+            var cubeColorStruct = new CubeColor(cubeColor);
+
             // Cubeを生成
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.name = $"Cube_{x}_{y}_{z}";
             cube.transform.position = position;
             cube.transform.localScale = Vector3.one * CubeSize;
 
-            // Cubeの色を設定（MonoBehaviourでのローカル変数名に注意）
-            Renderer objectRenderer = cube.GetComponent<Renderer>();
-            objectRenderer.material.color = cubeColor;
+            // MonoCubeコンポーネントを追加して初期化
+            MonoCube monoCube = cube.AddComponent<MonoCube>();
+            monoCube.Initialize(cubeID, cubeColorStruct);
+
+            // Dictionaryに追加
+            _cubeDictionary[cubeID] = monoCube;
         }
     }
 }
