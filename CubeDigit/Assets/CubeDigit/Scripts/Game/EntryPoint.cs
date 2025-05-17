@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -53,16 +54,13 @@ namespace CubeDigit.Game
                 cubeParent.transform
             );
             // 全cubeに色を指定
-            for (int x = 0; x < cubeCount.x; x++)
+            var allIds = Enumerable.Range(0, cubeCount.x)
+                .SelectMany(x => Enumerable.Range(0, cubeCount.y)
+                    .SelectMany(y => Enumerable.Range(0, cubeCount.z)
+                        .Select(z => new CubeID(x, y, z))));
+            foreach (var id in allIds)
             {
-                for (int y = 0; y < cubeCount.y; y++)
-                {
-                    for (int z = 0; z < cubeCount.z; z++)
-                    {
-                        var cubeID = new CubeID(x, y, z);
-                        _cubeRenderer.SetColor(cubeID, color);
-                    }
-                }
+                _cubeRenderer.SetColor(id, color);
             }
         }
     }
