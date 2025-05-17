@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using CubeDigit.UnityUtils;
@@ -10,7 +9,7 @@ namespace CubeDigit.Game
     /// アプリケーションのエントリーポイントとなるクラス
     /// Cubeの生成と配置を管理する
     /// </summary>
-    public class EntryPoint : MonoBehaviour
+    public class EntryPoint : MonoBehaviour, ICubeRenderer
     {
         /// <summary>
         /// Cubeのサイズ（幅・高さ・奥行き）
@@ -38,13 +37,6 @@ namespace CubeDigit.Game
         /// CubeIDとMonoCubeの対応を管理するDictionary
         /// </summary>
         readonly Dictionary<CubeID, MonoCube> _cubeDictionary = new();
-
-        /// <summary>
-        /// CubeIDに対応するMonoCubeを取得する
-        /// </summary>
-        /// <param name="cubeID">取得したいCubeのID</param>
-        /// <returns>対応するMonoCube、存在しない場合はnull</returns>
-        public MonoCube GetCube(CubeID cubeID) => _cubeDictionary.GetValueOrDefault(cubeID);
 
         void Awake()
         {
@@ -123,6 +115,22 @@ namespace CubeDigit.Game
 
             // Dictionaryに追加
             _cubeDictionary[cubeID] = monoCube;
+        }
+
+        /// <summary>
+        /// 指定されたCubeIDのキューブの色を設定する
+        /// </summary>
+        /// <param name="cubeID">色を変更するキューブのID</param>
+        /// <param name="color">設定する色情報</param>
+        void ICubeRenderer.SetColor(CubeID cubeID, CubeColor color)
+        {
+            // キューブが存在するか確認
+            if (!_cubeDictionary.TryGetValue(cubeID, out MonoCube monoCube))
+            {
+                Debug.LogWarning($"CubeID: {cubeID} のキューブは存在しません。");
+                return;
+            }
+            monoCube.ApplyCubeColor(color);
         }
     }
 }

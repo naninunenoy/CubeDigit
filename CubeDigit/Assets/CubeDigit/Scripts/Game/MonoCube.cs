@@ -30,7 +30,7 @@ namespace CubeDigit.Game
             ApplyCubeColor(cubeColor);
         }
 
-        void ApplyCubeColor(CubeColor cubeColor)
+        public void ApplyCubeColor(CubeColor cubeColor)
         {
             if (!cubeColor.Visible)
             {
