@@ -11,29 +11,24 @@ namespace CubeDigit.Game
         /// <summary>
         /// Cubeのサイズ（幅・高さ・奥行き）
         /// </summary>
-        private const float CubeSize = 1.0f;
+        const float CubeSize = 1.0f;
 
         /// <summary>
         /// Cube間の間隔
         /// </summary>
-        private const float CubeSpacing = 0.1f;
+        const float CubeSpacing = 0.1f;
 
         /// <summary>
         /// 生成するCubeの数（X,Y,Z）
         /// </summary>
-        [SerializeField]
-        private Vector3Int cubeCount = new();
+        [SerializeField] Vector3Int cubeCount = default;
 
         /// <summary>
         /// Cubeに適用する色
         /// </summary>
-        [SerializeField]
-        private Color cubeColor = new();
+        [SerializeField] Color cubeColor = default;
 
-        /// <summary>
-        /// 初期化処理
-        /// </summary>
-        private void Start()
+        void Start()
         {
             CreateCubes();
         }
@@ -41,7 +36,7 @@ namespace CubeDigit.Game
         /// <summary>
         /// 指定された数のCubeを生成して配置する
         /// </summary>
-        private void CreateCubes()
+        void CreateCubes()
         {
             // 配置の総サイズを計算（Cubeのサイズ + 間隔）
             float totalWidth = cubeCount.x * CubeSize + (cubeCount.x - 1) * CubeSpacing;
@@ -75,7 +70,7 @@ namespace CubeDigit.Game
         /// <param name="y">Y座標インデックス</param>
         /// <param name="z">Z座標インデックス</param>
         /// <param name="startPosition">配置開始位置</param>
-        private void CreateCubeAt(int x, int y, int z, Vector3 startPosition)
+        void CreateCubeAt(int x, int y, int z, Vector3 startPosition)
         {
             // Cubeの位置を計算
             var position = new Vector3(

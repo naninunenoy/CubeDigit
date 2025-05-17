@@ -10,6 +10,7 @@ Array/List/Collectionが必須でない場合はIEnumerableを公開あるいは
 外部に公開する際は可能な限りIEnumerable/IReadOnly/ReadOnlyとして公開する。
 可能な限り(著しく可読性を下げない限り)無駄なAllocやGCを避けること。
 すべてのクラス・メソッド・メンバ変数にはドキュメントコメントをつけること。
+しかし、classの継承やinterfaceの実装時には不要。
 Linqは積極的に使ってください。ただし中の条件式が複雑になりすぎないよう注意してください。
 Linqではクエリ構文は使わずメソッド構文を使用すること。
 
@@ -45,11 +46,14 @@ namespaceの相互参照はない方がいいが、無くそうとすること�
 
 ## コードスタイル
 基本は ./../.editorconfig を参照のこと。
-private はなくてよい。
+private つけないでください。
+floatの初期化では X.0F を使用すること。
 varか型名明記はどちらでもいいが、型名が長いと思われる場合はvarを使って。
 80文字を目安に改行。ただし少しくらいなら超えてよいので無理な改行はせず読みやすさを優先。
 メンバ変数にはtarget typed newを使用。
 ローカル変数にはtarget typed newを使わない。
+classやstructの初期化はdefaultを使用。
+stringの初期化はstring.Emptyを使用。
 
 ### Unityでの注意
 MonoBehaviour上の実装においてローカル変数名が被らないよう注意(nameやrendererなど)。
