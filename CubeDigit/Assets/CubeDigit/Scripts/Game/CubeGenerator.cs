@@ -11,7 +11,7 @@ namespace CubeDigit.Game
         /// <summary>
         /// CubeIDとMonoCubeの対応を管理するDictionary
         /// </summary>
-        private readonly Dictionary<CubeID, MonoCube> _cubeDictionary = new Dictionary<CubeID, MonoCube>();
+        private readonly Dictionary<CubeID, MonoCube> _cubeDictionary = new();
 
         /// <summary>
         /// キューブ群を生成する

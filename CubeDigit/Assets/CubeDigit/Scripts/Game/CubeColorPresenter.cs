@@ -6,6 +6,7 @@ namespace CubeDigit.Game;
 [Routes]
 public partial class CubeColorPresenter
 {
+    CubeGenerator _cubeGenerator = new();
     /// <summary>
     /// キューブのレンダラー
     /// </summary>
@@ -32,8 +33,7 @@ public partial class CubeColorPresenter
         }
 
         // CubeGeneratorを使用してキューブ群を生成
-        var cubeGenerator = new CubeGenerator();
-        _cubeRenderer = cubeGenerator.Generate(
+        _cubeRenderer = _cubeGenerator.Generate(
             command.X,
             command.Y,
             command.Z,
@@ -50,6 +50,8 @@ public partial class CubeColorPresenter
     [Route]
     public void OnCommand(SetColorCommand command)
     {
+        Debug.Log($"SetColorCommand ID:{command.Id} Color:{command.Color}");
+
         // キューブレンダラーがnullの場合は何もしない
         if (_cubeRenderer == null)
         {
@@ -71,7 +73,9 @@ public partial class CubeColorPresenter
         }
         var cubeId = new CubeID(x, y, z);
         // コマンドの色を取得
-        var cubeColor = ColorUtility.TryParseHtmlString(command.Color, out var parsedColor) ? parsedColor : Color.white;
+        CubeColor cubeColor = command.Color == "#"
+            ? new CubeColor(0, 0, 0, false)
+            : new CubeColor(ColorUtility.TryParseHtmlString(command.Color, out var parsedColor) ? parsedColor : Color.white);
         // Cubeの色を変更
         _cubeRenderer?.SetColor(cubeId, new CubeColor(cubeColor));
     }

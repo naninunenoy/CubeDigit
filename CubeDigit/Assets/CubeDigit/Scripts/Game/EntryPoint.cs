@@ -20,6 +20,8 @@ namespace CubeDigit.Game
         /// </summary>
         [SerializeField] GameObject cubeParent = null;
 
+        MRubyContext _mRubyContext;
+
         void Awake()
         {
             // キューブの親オブジェクトがnullの場合はエラー
@@ -30,14 +32,19 @@ namespace CubeDigit.Game
         async UniTaskVoid Start()
         {
             // コンテキストの生成
-            var context = MRubyContext.Create();
-            context.Router = _router;
-            context.CommandPreset = new MyCommandPreset();
+            _mRubyContext = MRubyContext.Create();
+            _mRubyContext.Router = _router;
+            _mRubyContext.CommandPreset = new MyCommandPreset();
 
             // Rubyスクリプトの実行
             var rubySource = Resources.Load<TextAsset>("mruby/main");
-            using MRubyScript script = context.CompileScript(rubySource.bytes);
+            using MRubyScript script = _mRubyContext.CompileScript(rubySource.bytes);
             await script.RunAsync();
+        }
+
+        void OnDestroy()
+        {
+            _mRubyContext?.Dispose();
         }
     }
 }
