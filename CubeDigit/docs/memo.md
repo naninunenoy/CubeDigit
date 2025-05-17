@@ -1,9 +1,8 @@
 ﻿# agentに依頼する際の下書き
 レスポンスの最初に「以下の指示を実行します」と記載し、その後 memo.md の内容を引用形式で出力してください。
 
-指定されたcubeの位置から割り振られるCubeのIDであるCubeIDクラスを実装してください。EntryPointではまだ利用できなくてよいです。
-指定されるcubeの位置はpositionではなく実質indexであることに注意してください。
-内部にVector3Intを持ち、CubeID同士で比較するIEquatableを実装してください。
-文字列を"x|y|z"の形式で取得できるようにしてください。
-
-テストコードも実装してみてください。
+MonoBehaviourを継承したMonoCubeクラスを作成し、以下の機能を実装してください。
+* Initializeメソッドを持ち、CubeIDとCubeColorを引数に取る。
+* CubeColor.Visibleがfalseならオブジェクトを非表示にする
+* CubeIDをプロパティとして公開する
+* Object.nameをCubeIDに設定する
