@@ -10,11 +10,14 @@ Array/List/Collectionが必須でない場合はIEnumerableを公開あるいは
 外部に公開する際は可能な限りIEnumerable/IReadOnly/ReadOnlyとして公開する。
 可能な限り(著しく可読性を下げない限り)無駄なAllocやGCを避けること。
 すべてのクラス・メソッド・メンバ変数にはドキュメントコメントをつけること。
+Linqは積極的に使ってください。ただし中の条件式が複雑になりすぎないよう注意してください。
+Linqではクエリ構文は使わずメソッド構文を使用すること。
 
 ### クラス分離
 クラスの相互参照は許さない。
 データクラスを積極的に作り、可能な限りイミュータブルにする。
 データの識別にはintやstringをそのまま使わずID用の構造体やenumを定義する。
+Unityにおいてenumは変更に弱いので特にその値がファイルに保存される場合は使用しないこと。
 依存の注入は可能な限りコンストラクタで行う。次点で required init プロパティ。
 リソースの破棄をIDisposableで可能か限り行うこと。
 
@@ -28,9 +31,12 @@ interfaceを使うのは実装が分岐する場合もしくはUnity外の実装
 
 ### フレームワーク
 非同期処理にはUniTaskを使用し、Task/ValueTask/コルーチン/Awaitableは使わない。
-イベントにはR3.Observableを使用し、System.IObservableやUnityEventやeventは使わない。
+イベントにはR3.Observableを使用し、UnityEventやevent Actionは使わない。
 JSONの処理にはNewtonsoft.Jsonを使用し、UnityのJsonUtilityは使わない。
 ユーザーデータを保存する際はpersistentDataPathに専用ファイルを保存する。PlayerPrefsは使わない。
+非同期処理にはAsyncサフィックスを付けること。
+非同期処理の最後の引数にはCancellationTokenを渡すこと。
+MonoBehaviour上ではdestroyCancellationTokenを使用すること。
 
 ## レイヤー設計
 Game/ 下のディレクトリには対応するnamespaceを設定すること。
@@ -38,4 +44,13 @@ Game/ 下のディレクトリには対応するnamespaceを設定すること�
 namespaceの相互参照はない方がいいが、無くそうとすることで可読性を著しく下げる場合は許容する。
 
 ## コードスタイル
-./../.editorconfig を参照のこと
+基本は ./../.editorconfig を参照のこと。
+private はなくてよい。
+varか型名明記はどちらでもいいが、型名が長いと思われる場合はvarを使って。
+80文字を目安に改行。ただし少しくらいなら超えてよいので無理な改行はせず読みやすさを優先。
+メンバ変数にはtarget typed newを使用。
+ローカル変数にはtarget typed newを使わない。
+
+### Unityでの注意
+MonoBehaviour上の実装においてローカル変数名が被らないよう注意(nameやrendererなど)。
+空の Update() や Start() は削除。
