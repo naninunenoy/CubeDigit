@@ -35,7 +35,7 @@ namespace CubeDigit.Game
             context.CommandPreset = new MyCommandPreset();
 
             // Rubyスクリプトの実行
-            var rubySource = Resources.Load<TextAsset>("timeline");
+            var rubySource = Resources.Load<TextAsset>("mruby/main");
             using MRubyScript script = context.CompileScript(rubySource.bytes);
             await script.RunAsync();
         }
