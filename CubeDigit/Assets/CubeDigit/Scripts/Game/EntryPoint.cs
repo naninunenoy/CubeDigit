@@ -39,6 +39,15 @@ namespace CubeDigit.Game
 
         void Awake()
         {
+            // Cubeのサイズが0以下の場合はエラー
+            Assert.IsTrue(cubeSize > 0, $"{nameof(cubeSize)} must be greater than 0.");
+            // Cube間の間隔が0以下の場合はエラー
+            Assert.IsTrue(cubeSpacing >= 0, $"{nameof(cubeSpacing)} must be greater than or equal to 0.");
+            // 生成するCubeの数が0以下の場合はエラー
+            Assert.IsTrue(cubeCount.x > 0, $"{nameof(cubeCount.x)} must be greater than 0.");
+            Assert.IsTrue(cubeCount.y > 0, $"{nameof(cubeCount.y)} must be greater than 0.");
+            Assert.IsTrue(cubeCount.z > 0, $"{nameof(cubeCount.z)} must be greater than 0.");
+            // Cubeの親オブジェクトがnullの場合はエラー
             Assert.IsNotNull(cubeParent, $"{nameof(cubeParent)} is null.");
         }
 
