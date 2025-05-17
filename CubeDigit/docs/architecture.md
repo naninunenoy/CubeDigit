@@ -73,3 +73,4 @@ stringの初期化はstring.Emptyを使用。
 ### Unityでの注意
 MonoBehaviour上の実装においてローカル変数名が被らないよう注意(nameやrendererなど)。
 空の Update() や Start() は削除。
+UnityEngine.ObjectをSerializeFieldで参照する場合はAwake内でAssert.IsNotNullを行うこと。

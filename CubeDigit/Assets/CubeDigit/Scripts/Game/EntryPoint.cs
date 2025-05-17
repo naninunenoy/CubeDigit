@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using CubeDigit.UnityUtils;
+using UnityEngine.Assertions;
 
 namespace CubeDigit.Game
 {
@@ -19,6 +21,8 @@ namespace CubeDigit.Game
         /// Cube間の間隔
         /// </summary>
         const float CubeSpacing = 0.1f;
+
+        [SerializeField] GameObject cubeParent = null;
 
         /// <summary>
         /// 生成するCubeの数（X,Y,Z）
@@ -41,6 +45,11 @@ namespace CubeDigit.Game
         /// <param name="cubeID">取得したいCubeのID</param>
         /// <returns>対応するMonoCube、存在しない場合はnull</returns>
         public MonoCube GetCube(CubeID cubeID) => _cubeDictionary.GetValueOrDefault(cubeID);
+
+        void Awake()
+        {
+            Assert.IsNotNull(cubeParent, $"{nameof(cubeParent)} is null.");
+        }
 
         void Start()
         {
@@ -106,6 +115,7 @@ namespace CubeDigit.Game
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.position = position;
             cube.transform.localScale = Vector3.one * CubeSize;
+            cube.transform.SetParent(cubeParent.transform, false);
 
             // MonoCubeコンポーネントを追加して初期化
             MonoCube monoCube = cube.AddComponent<MonoCube>();
