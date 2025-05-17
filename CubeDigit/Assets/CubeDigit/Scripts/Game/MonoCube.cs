@@ -17,17 +17,13 @@ namespace CubeDigit.Game
         /// キューブを初期化します
         /// </summary>
         /// <param name="cubeID">キューブのID</param>
-        /// <param name="cubeColor">キューブの色情報</param>
-        public void Initialize(CubeID cubeID, CubeColor cubeColor)
+        public void Initialize(CubeID cubeID)
         {
             // CubeIDを設定
             CubeID = cubeID;
 
             // オブジェクト名をCubeIDの文字列表現に設定
             gameObject.name = $"Cube#{cubeID.ToString()}";
-
-            // キューブの色を適用
-            ApplyCubeColor(cubeColor);
         }
 
         public void ApplyCubeColor(CubeColor cubeColor)

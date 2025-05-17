@@ -1,3 +1,5 @@
+using CubeDigit.Game;
+
 namespace CubeDigit.UnityUtils
 {
     /// <summary>

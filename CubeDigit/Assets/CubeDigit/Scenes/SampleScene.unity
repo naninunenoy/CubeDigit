@@ -406,9 +406,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76a5e27cc67ca14ea7cf067959e3f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeParent: {fileID: 1655102465}
+  cubeSize: 1
+  cubeSpacing: 0.1
   cubeCount: {x: 3, y: 3, z: 3}
-  cubeColor: {r: 1, g: 0, b: 0, a: 1}
+  color: {r: 1, g: 0.5503144, b: 0.5503144, a: 1}
+  cubeParent: {fileID: 1655102465}
 --- !u!4 &827623897
 Transform:
   m_ObjectHideFlags: 0

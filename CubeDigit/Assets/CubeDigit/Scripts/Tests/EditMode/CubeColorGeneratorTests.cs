@@ -1,3 +1,4 @@
+using CubeDigit.Game;
 using NUnit.Framework;
 using UnityEngine;
 using CubeDigit.UnityUtils;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CubeDigit.UnityUtils
+namespace CubeDigit.Game
 {
     /// <summary>
     /// キューブの色情報を表すクラス
