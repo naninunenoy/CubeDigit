@@ -24,18 +24,9 @@ namespace CubeDigit.Tests.EditMode
                     { "0|0|0", "cube1" },
                     { "1|0|0", "cube2" }
                 },
-                Frames = new List<Dictionary<string, CubeJson.FrameJson>>
+                Frames = new Dictionary<string, List<CubeJson.FrameJson>>
                 {
-                    new Dictionary<string, CubeJson.FrameJson>
-                    {
-                        {
-                            "0|0|0", new CubeJson.FrameJson
-                            {
-                                Time = 0.5f,
-                                Color = "#FF0000"
-                            }
-                        }
-                    }
+                    { "0|0|0", new List<CubeJson.FrameJson> { new CubeJson.FrameJson { Time = 0.5f, Color = "#FF0000" } } }
                 }
             };
 
@@ -60,10 +51,8 @@ namespace CubeDigit.Tests.EditMode
 
             // Check Frames
             Assert.AreEqual(1, deserializedCubeJson.Frames.Count);
-            var frame = deserializedCubeJson.Frames[0];
-            Assert.IsTrue(frame.ContainsKey("0|0|0"));
-            Assert.AreEqual(0.5f, frame["0|0|0"].Time);
-            Assert.AreEqual("#FF0000", frame["0|0|0"].Color);
+            Assert.AreEqual(0.5f, deserializedCubeJson.Frames["0|0|0"][0].Time);
+            Assert.AreEqual("#FF0000", deserializedCubeJson.Frames["0|0|0"][0].Color);
         }
 
         [Test]

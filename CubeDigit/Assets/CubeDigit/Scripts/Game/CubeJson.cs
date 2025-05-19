@@ -8,13 +8,13 @@ public class CubeJson
 {
     [JsonProperty("settings")] public SettingsJson Settings { get; set; } = new();
     [JsonProperty("cubes")] public Dictionary<string, string> Cubes { get; set; }　= new();
-    [JsonProperty("frames")] public List<Dictionary<string, FrameJson>> Frames { get; set; } = new();
+    [JsonProperty("frames")] public Dictionary<string, List<FrameJson>> Frames { get; set; } = new();
 
     [JsonObject(MemberSerialization.OptIn)]
     public class SettingsJson
     {
         [JsonProperty("cubeSize")] public int CubeSize { get; set; }
-        [JsonProperty("cubeSpacing")] public int CubeSpacing { get; set; }
+        [JsonProperty("cubeSpacing")] public float CubeSpacing { get; set; }
         [JsonProperty("cubeNumber")] public Int3Json CubeNumber { get; set; }
     }
 

@@ -50,7 +50,7 @@ public partial class CubeColorPresenter
     [Route]
     public void OnCommand(SetColorCommand command)
     {
-        //Debug.Log($"SetColorCommand ID:{command.Id} Color:{command.Color}");
+        Debug.Log($"SetColorCommand ID:{command.Id} Color:{command.Color}");
 
         // キューブレンダラーがnullの場合は何もしない
         if (_cubeRenderer == null)
