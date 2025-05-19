@@ -37,9 +37,9 @@ namespace CubeDigit.Game
             _mRubyContext.CommandPreset = new MyCommandPreset();
 
             // Rubyスクリプトの実行
-            var rubySource = Resources.Load<TextAsset>("mruby/main");
+            /*var rubySource = Resources.Load<TextAsset>("mruby/main");
             using MRubyScript script = _mRubyContext.CompileScript(rubySource.bytes);
-            await script.RunAsync();
+            await script.RunAsync();*/
         }
 
         void OnDestroy()
