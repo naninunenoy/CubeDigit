@@ -24,9 +24,9 @@ namespace CubeDigit.Tests.EditMode
                     { "0|0|0", "cube1" },
                     { "1|0|0", "cube2" }
                 },
-                Frames = new Dictionary<string, List<CubeJson.FrameJson>>
+                Animations = new Dictionary<string, List<CubeJson.FrameJson>>
                 {
-                    { "0|0|0", new List<CubeJson.FrameJson> { new CubeJson.FrameJson { Time = 0.5f, Color = "#FF0000" } } }
+                    { "0|0|0", new List<CubeJson.FrameJson> { new CubeJson.FrameJson { Frame = 1, Color = "#FF0000" } } }
                 }
             };
 
@@ -50,9 +50,9 @@ namespace CubeDigit.Tests.EditMode
             Assert.AreEqual("cube2", deserializedCubeJson.Cubes["1|0|0"]);
 
             // Check Frames
-            Assert.AreEqual(1, deserializedCubeJson.Frames.Count);
-            Assert.AreEqual(0.5f, deserializedCubeJson.Frames["0|0|0"][0].Time);
-            Assert.AreEqual("#FF0000", deserializedCubeJson.Frames["0|0|0"][0].Color);
+            Assert.AreEqual(1, deserializedCubeJson.Animations.Count);
+            Assert.AreEqual(1, deserializedCubeJson.Animations["0|0|0"][0].Frame);
+            Assert.AreEqual("#FF0000", deserializedCubeJson.Animations["0|0|0"][0].Color);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace CubeDigit.Tests.EditMode
             // Assert
             Assert.NotNull(cubeJson.Settings);
             Assert.NotNull(cubeJson.Cubes);
-            Assert.NotNull(cubeJson.Frames);
+            Assert.NotNull(cubeJson.Animations);
 
             // Default color starts with #
             var frameJson = new CubeJson.FrameJson();

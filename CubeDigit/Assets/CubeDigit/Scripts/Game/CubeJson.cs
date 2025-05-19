@@ -8,7 +8,7 @@ public class CubeJson
 {
     [JsonProperty("settings")] public SettingsJson Settings { get; set; } = new();
     [JsonProperty("cubes")] public Dictionary<string, string> Cubes { get; set; }　= new();
-    [JsonProperty("frames")] public Dictionary<string, List<FrameJson>> Frames { get; set; } = new();
+    [JsonProperty("animations")] public Dictionary<string, List<FrameJson>> Animations { get; set; } = new();
 
     [JsonObject(MemberSerialization.OptIn)]
     public class SettingsJson
@@ -21,7 +21,7 @@ public class CubeJson
     [JsonObject(MemberSerialization.OptIn)]
     public class FrameJson
     {
-        [JsonProperty("time")] public float Time { get; set; }
+        [JsonProperty("frame")] public int Frame { get; set; }
         [JsonProperty("color")] public string Color { get; set; } = "#";
     }
 

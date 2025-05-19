@@ -14,21 +14,21 @@
     "0|1|1": "#000000",
     "1|1|1": "#000000"
   },
-  "frames" : {
+  "animations" : {
     "0|0|0": [
-      { "time": 0.0, "color": "#FF0000" },
-      { "time": 1.0, "color": "#00FF00" },
-      { "time": 2.0, "color": "#0000FF" }
+      { "frame": 0, "color": "#FF0000" },
+      { "frame": 60, "color": "#00FF00" },
+      { "frame": 120, "color": "#0000FF" }
     ],
     "1|0|0": [
-      { "time": 0.0, "color": "#00FF00" },
-      { "time": 1.0, "color": "#0000FF" },
-      { "time": 2.0, "color": "#FF0000" }
+      { "frame": 0, "color": "#00FF00" },
+      { "frame": 60, "color": "#0000FF" },
+      { "frame": 120, "color": "#FF0000" }
     ],
     "0|1|0": [
-      { "time": 0.0, "color": "#0000FF" },
-      { "time": 1.0, "color": "#FF0000" },
-      { "time": 2.0, "color": "#00FF00" }
+      { "frame": 0, "color": "#0000FF" },
+      { "frame": 60, "color": "#FF0000" },
+      { "frame": 120, "color": "#00FF00" }
     ]
   }
 }

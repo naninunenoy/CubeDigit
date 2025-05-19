@@ -6,8 +6,6 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VitalRouter;
 
-using R3;
-
 namespace CubeDigit.Game
 {
     /// <summary>
@@ -15,6 +13,7 @@ namespace CubeDigit.Game
     /// </summary>
     public class CubeJsonExecutor
     {
+        const int FrameRate = 60;
         private readonly  Func<UniTask<CubeJson>> _loadJsonTask;
         private readonly ICommandPublisher _publisher;
 
@@ -30,19 +29,18 @@ namespace CubeDigit.Game
         /// <param name="cancel">キャンセルトークン</param>
         public async UniTask ExecuteAsync(CancellationToken cancel)
         {
-            try
+            // JSONをデシリアライズ
+            var cubeJson = await _loadJsonTask();
+            if (cubeJson == null)
             {
-                // JSONをデシリアライズ
-                var cubeJson = await _loadJsonTask();
-                if (cubeJson == null)
-                {
-                    Debug.LogError("JSONのデシリアライズに失敗しました");
-                    return;
-                }
+                Debug.LogError("JSONのデシリアライズに失敗しました");
+                return;
+            }
 
-                // キューブの初期化
-                var settings = cubeJson.Settings;
-                await _publisher.PublishAsync(new InitCubesCommand
+            // キューブの初期化
+            var settings = cubeJson.Settings;
+            await _publisher.PublishAsync(
+                new InitCubesCommand
                 {
                     X = settings.CubeNumber.X,
                     Y = settings.CubeNumber.Y,
@@ -50,57 +48,47 @@ namespace CubeDigit.Game
                     Size = settings.CubeSize,
                     Spacing = settings.CubeSpacing
                 }, cancel);
-                foreach (var cubeId in cubeJson.Cubes.Keys)
+            foreach (var cubeId in cubeJson.Cubes.Keys)
+            {
+                var color = cubeJson.Cubes[cubeId];
+                if (cubeJson.Animations.TryGetValue(cubeId, out var frames))
                 {
-                    var color = cubeJson.Cubes[cubeId];
-                    // 色を設定するコマンドを発行
-                    _ = _publisher.PublishAsync(new SetColorCommand { Id = cubeId, Color = color }, cancel);
+                    var zeroFrame = frames.FirstOrDefault(f => f.Frame == 0);
+                    if (zeroFrame != null)
+                    {
+                        color = zeroFrame.Color;
+                    }
                 }
+                // 色を設定するコマンドを発行
+                _ = _publisher.PublishAsync(new SetColorCommand { Id = cubeId, Color = color }, cancel);
+            }
 
-                await UniTask.Yield();
-                // アニメーションフレームを作成
-                var cubeAnimations = new Dictionary<string, List<UniTask>>();
-                foreach (var cubeId in cubeJson.Frames.Keys)
+            // アニメーションフレームを作成
+            foreach (var cubeId in cubeJson.Cubes.Keys)
+            {
+                var animationFrames = cubeJson.Animations.TryGetValue(cubeId, out var frames)
+                    ? frames.OrderBy(f => f.Frame).ToList()
+                    : new List<CubeJson.FrameJson> { new() { Frame = 0, Color = cubeJson.Cubes[cubeId] } };
+
+                UniTask.Void(async () =>
                 {
-                    var frames = cubeJson.Frames[cubeId].OrderBy(f => f.Time).ToList();
-                    var lastFrame = new CubeJson.FrameJson
+                    for (var i = 0; i < animationFrames.Count; i++)
                     {
-                        Time = float.MinValue,
-                        Color = frames[^1].Color
-                    };
-                    frames.Add(lastFrame);
-                    cubeAnimations[cubeId] = frames
-                        .Zip(frames.Skip(1), (start, end) => (start.Color, Duration: end.Time - start.Time))
-                        .Select(x => UniTask.Defer(async () =>
+                        var current = animationFrames[i];
+                        // 色を設定するコマンドを発行
+                        _ = _publisher.PublishAsync(new SetColorCommand { Id = cubeId, Color = current.Color }, cancel);
+                        // 最後のフレームの場合、次のフレームは存在しない
+                        if (i + 1 >= animationFrames.Count)
                         {
-                            // 色を設定するコマンドを発行
-                            _ = _publisher.PublishAsync(new SetColorCommand { Id = cubeId, Color = x.Color }, cancel);
-                            // 指定された時間だけ待機
-                            var waitForNext = x.Duration > 0 ? TimeSpan.FromSeconds(x.Duration) : TimeSpan.MaxValue;
-                            await UniTask.Delay(waitForNext, cancellationToken: cancel);
-                        }))
-                        .ToList();
-                }
-                // アニメーションフレームを順番に実行
-                foreach(var animation in cubeAnimations)
-                {
-                    UniTask.Void(async () =>
-                    {
-                        foreach (var task in animation.Value)
-                        {
-                            await task;
+                            break;
                         }
-                    });
-                }
-            }
-            catch (OperationCanceledException)
-            {
-                // キャンセルされた場合は何もしない
-                Debug.Log("JSONアニメーションの実行がキャンセルされました");
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"JSONアニメーションの実行中にエラーが発生しました: {ex.Message}");
+                        var next = animationFrames[i + 1];
+                        // 指定された時間だけ待機
+                        var frameCount = next.Frame - current.Frame;
+                        var seconds = frameCount / (float)FrameRate;
+                        await UniTask.Delay(TimeSpan.FromSeconds(seconds), cancellationToken: cancel);
+                    }
+                });
             }
         }
     }
